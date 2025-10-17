@@ -14,7 +14,6 @@ export const Profile: React.FC = () => {
     const [hasProfile, setHasProfile] = useState<boolean | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isCreating, setIsCreating] = useState(false);
-    const [isUpdating, setIsUpdating] = useState(false);
     const [profile, setProfile] = useState({
         name: "",
         avatar: "",
@@ -141,8 +140,6 @@ export const Profile: React.FC = () => {
         }
 
         try {
-            setIsUpdating(true);
-
             // Convert strings to vector<u8> for the contract
             const nameBytes = Array.from(new TextEncoder().encode(profile.name));
             const avatarBytes = Array.from(new TextEncoder().encode(profile.avatar || ""));
@@ -150,12 +147,10 @@ export const Profile: React.FC = () => {
 
             const tx = new Transaction();
 
-            const profileObject = tx.object(profileObjectId);
-
             tx.moveCall({
                 target: `${CONTRACTS.PACKAGE_ID}::profile::update_profile`,
                 arguments: [
-                    tx.object(profileObjectId), // Use tx.object() directly
+                    tx.object(profileObjectId),
                     tx.pure.vector('u8', nameBytes),
                     tx.pure.vector('u8', avatarBytes),
                     tx.pure.vector('u8', bioBytes),
@@ -179,8 +174,6 @@ export const Profile: React.FC = () => {
         } catch (error: any) {
             console.error("❌ Error updating profile:", error);
             alert(`Failed to update profile: ${error.message}`);
-        } finally {
-            setIsUpdating(false);
         }
     };
 

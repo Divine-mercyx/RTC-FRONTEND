@@ -24,14 +24,13 @@ export const Contacts: React.FC = () => {
     
     // Initialize call service
     const [callService] = useState(() => new CallService(signAndExecuteTransaction));
-    const { 
-        callState, 
-        isLoading: callLoading, 
-        initiateCall, 
-        endCall, 
-        toggleAudio, 
+    const {
+        callState,
+        initiateCall,
+        endCall,
+        toggleAudio,
         toggleVideo,
-        currentSessionId // NEW: Get current session ID from hook
+        currentSessionId
     } = useWebRTC(callService);
 
     // NEW: Show ActiveCall when we have an outgoing call

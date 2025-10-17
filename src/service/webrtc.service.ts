@@ -1,4 +1,4 @@
-import type { CallConfig, CallState, IceCandidateMessage, SdpMessage } from "../types/webrtc.types";
+import type { CallConfig, CallState } from "../types/webrtc.types";
 
 export class WebRTCService {
     private peerConnection: RTCPeerConnection | null = null;
@@ -9,7 +9,6 @@ export class WebRTCService {
     private isLocalVideoMuted: boolean = false;
     private onStateChange: ((state: CallState) => void) | null = null;
     private onIceCandidate: ((candidate: RTCIceCandidate) => void) | null = null;
-    private currentSessionId: string | null = null;
     private iceCandidatesQueue: RTCIceCandidateInit[] = [];
     private remoteDescriptionSet: boolean = false;
 
@@ -21,7 +20,6 @@ export class WebRTCService {
     }
 
     public setSessionId(sessionId: string) {
-        this.currentSessionId = sessionId;
         console.log('WebRTC session ID set:', sessionId);
     }
 
